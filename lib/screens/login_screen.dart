@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,18 +20,12 @@ class _LoginScreenState extends State<LoginScreen> {
       final email = _emailController.text;
       final password = _passwordController.text;
 
-      // Aqui você pode conectar com API, Firebase ou validar localmente
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Usuário $email logado com sucesso!")),
-      );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
 
       _emailController.clear();
       _passwordController.clear();
     }
-  }
-
-  void _goToRegister() {
-    Navigator.pushReplacementNamed(context, '/register');
   }
 
   @override
@@ -96,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             builder: (context) => const RegisterScreen()));
                   },
                   child: const Text(
-                    "Não possui conta? Entrar",
+                    "Não possui conta? Cadastre-se",
                     style: TextStyle(fontSize: 16),
                   ),
                 ),

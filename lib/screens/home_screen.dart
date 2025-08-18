@@ -4,7 +4,6 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   void _startCamera(BuildContext context) {
-    // Aqui futuramente você chamaria a tela da câmera
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Abrir câmera para classificar o lixo")),
     );
@@ -58,7 +57,7 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () => _startCamera(context),
                 icon: const Icon(Icons.camera_alt),
                 label: const Text(
-                  "Começar",
+                  "Escanear",
                   style: TextStyle(fontSize: 20),
                 ),
                 style: ElevatedButton.styleFrom(

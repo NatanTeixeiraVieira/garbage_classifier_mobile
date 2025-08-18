@@ -21,6 +21,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final name = _nameController.text;
       final email = _emailController.text;
       final password = _passwordController.text;
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
   }
 
@@ -83,13 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () {
-                  _register();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomeScreen()));
-                },
+                onPressed: _register,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
