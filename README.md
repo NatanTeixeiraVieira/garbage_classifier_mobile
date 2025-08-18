@@ -1,16 +1,7 @@
-# garbage_classifier_mobile
+# Projeto de Classificação de Lixo com IA
 
-A new Flutter project.
+Este projeto consistem em um aplicativo de celular para auxiliar na classificação de lixo utilizando inteligência artificial e a câmera do dispositivo. A ideia é que o usuário escaneie o material e o aplicativo diga qual o tipo de material é aquele (plástico, vidro papel e afins), facilitando o descarte correto de materiais recicláveis e não recicláveis.
 
-## Getting Started
+Para a utilização do software, será necessário a realização do cadastro e do login, para que, futuramente, sejam implementados funcionalidades analíticas para que o usuário possa visualizar um histórico dos materias escaneados, mostrar dados personalizados, entre outras funções. Por isso, foi adicionado telas de cadastro e login
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Outra tela implementada foi a inicial, que conterá um botão para abrir a câmera do dispositivo e escanear o material a ser descartado.
