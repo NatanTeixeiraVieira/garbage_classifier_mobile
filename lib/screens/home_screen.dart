@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_classifier_mobile/widgets/button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,12 +14,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Cadastro"),
+        backgroundColor: Colors.green[50]!,
+      ),
       body: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 48),
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green[100]!, Colors.green[300]!],
+            colors: [Colors.green[50]!, Colors.green[200]!],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -29,7 +34,7 @@ class HomeScreen extends StatelessWidget {
             const Icon(
               Icons.recycling,
               size: 120,
-              color: Colors.white,
+              // color: Colors.white,
             ),
             const SizedBox(height: 24),
             const Text(
@@ -38,7 +43,7 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                // color: Colors.white,
               ),
             ),
             const SizedBox(height: 12),
@@ -47,29 +52,15 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white70,
+                // color: Colors.white70,
               ),
             ),
             const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () => _startCamera(context),
-                icon: const Icon(Icons.camera_alt),
-                label: const Text(
-                  "Escanear",
-                  style: TextStyle(fontSize: 20),
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.green[400],
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-            ),
+            Button(
+              icon: Icons.camera_alt,
+              onPressed: () => _startCamera(context),
+              text: "Escanear",
+            )
           ],
         ),
       ),
