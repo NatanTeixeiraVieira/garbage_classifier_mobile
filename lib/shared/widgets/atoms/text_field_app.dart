@@ -10,6 +10,7 @@ class TextFieldApp extends StatelessWidget {
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final bool readOnly;
+  final bool obscureText;
 
   const TextFieldApp({
     super.key,
@@ -21,6 +22,7 @@ class TextFieldApp extends StatelessWidget {
     this.validator,
     this.onChanged,
     this.readOnly = false,
+    this.obscureText = false,
   });
 
   @override
@@ -36,6 +38,7 @@ class TextFieldApp extends StatelessWidget {
         validator: validator,
         onChanged: onChanged,
         readOnly: readOnly,
+        obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
           border: const OutlineInputBorder(),
