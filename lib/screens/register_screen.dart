@@ -1,4 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/login_screen.dart';
 import 'package:garbage_classifier_mobile/widgets/button.dart';
@@ -16,13 +20,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _cepController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _neighborhoodController = TextEditingController();
+  final _cityController = TextEditingController();
+
+  Future<void> _buscarEndereco(String cep) async {
+    try {
+      final response =
+          await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data["erro"] == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("CEP não encontrado")),
+          );
+          return;
+        }
+
+        setState(() {
+          _streetController.text = data["logradouro"] ?? "";
+          _neighborhoodController.text = data["bairro"] ?? "";
+          _cityController.text = data["localidade"] ?? "";
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao buscar CEP: $e")),
+      );
+    }
+  }
 
   void _register() {
     if (_formKey.currentState!.validate()) {
-      final name = _nameController.text;
-      final email = _emailController.text;
-      final password = _passwordController.text;
-
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
@@ -33,6 +64,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _cepController.dispose();
+    _streetController.dispose();
+    _neighborhoodController.dispose();
+    _cityController.dispose();
     super.dispose();
   }
 
@@ -87,15 +122,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: _passwordController,
+                    controller: _cepController,
+                    maxLength: 8,
                     decoration: const InputDecoration(
-                      labelText: "Password",
+                      labelText: "CEP",
                       border: OutlineInputBorder(),
                     ),
-                    obscureText: true,
-                    validator: (value) => value != null && value.length < 8
-                        ? "A senha precisa ter pelo menos 8 caracteres"
-                        : null,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    validator: (value) {
+                      if (value?.length != 8) {
+                        return "CEP inválido";
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      if (value.length == 8) {
+                        _buscarEndereco(value);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _streetController,
+                    decoration: const InputDecoration(
+                      labelText: "Rua",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _neighborhoodController,
+                    decoration: const InputDecoration(
+                      labelText: "Bairro",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _cityController,
+                    decoration: const InputDecoration(
+                      labelText: "Cidade",
+                      border: OutlineInputBorder(),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   Button(
