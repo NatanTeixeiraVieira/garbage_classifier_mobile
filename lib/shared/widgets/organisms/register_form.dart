@@ -23,7 +23,6 @@ class _RegisterFormState extends State<RegisterForm>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -32,7 +31,6 @@ class _RegisterFormState extends State<RegisterForm>
   final _neighborhoodController = TextEditingController();
   final _cityController = TextEditingController();
 
-  // Animation
   late AnimationController _buttonController;
 
   @override
@@ -112,6 +110,7 @@ class _RegisterFormState extends State<RegisterForm>
           PersonalInfoFormSection(
             nameController: _nameController,
             emailController: _emailController,
+            passwordController: _passwordController,
           ),
           const SizedBox(height: 16),
           AddressFormSection(

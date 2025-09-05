@@ -4,11 +4,13 @@ import 'package:garbage_classifier_mobile/shared/widgets/atoms/text_field_app.da
 class PersonalInfoFormSection extends StatelessWidget {
   final TextEditingController nameController;
   final TextEditingController emailController;
+  final TextEditingController passwordController;
 
   const PersonalInfoFormSection({
     super.key,
     required this.nameController,
     required this.emailController,
+    required this.passwordController,
   });
 
   @override
@@ -32,6 +34,23 @@ class PersonalInfoFormSection extends StatelessWidget {
             if (value == null || value.isEmpty) return "Digite seu email";
             if (!value.contains("@") || !value.contains(".")) {
               return "Digite um email válido";
+            }
+            return null;
+          },
+        ),
+        const SizedBox(height: 16),
+        TextFieldApp(
+          label: "Senha",
+          controller: passwordController,
+          hint: "Digite sua senha",
+          keyboardType: TextInputType.text,
+          obscureText: true,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return "Digite sua senha";
+            }
+            if (value.length < 8) {
+              return "A senha precisa ter pelo menos 8 caracteres";
             }
             return null;
           },

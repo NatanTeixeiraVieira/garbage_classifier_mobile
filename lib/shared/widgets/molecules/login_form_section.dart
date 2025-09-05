@@ -4,15 +4,11 @@ import 'package:garbage_classifier_mobile/shared/widgets/atoms/text_field_app.da
 class LoginFormSection extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  final void Function(String)? onEmailChanged;
-  final void Function(String)? onPasswordChanged;
 
   const LoginFormSection({
     super.key,
     required this.emailController,
     required this.passwordController,
-    this.onEmailChanged,
-    this.onPasswordChanged,
   });
 
   @override
@@ -24,7 +20,6 @@ class LoginFormSection extends StatelessWidget {
           controller: emailController,
           hint: "Digite seu email",
           keyboardType: TextInputType.emailAddress,
-          onChanged: onEmailChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Digite seu email";
@@ -42,7 +37,6 @@ class LoginFormSection extends StatelessWidget {
           hint: "Digite sua senha",
           keyboardType: TextInputType.text,
           obscureText: true,
-          onChanged: onPasswordChanged,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "Digite sua senha";
