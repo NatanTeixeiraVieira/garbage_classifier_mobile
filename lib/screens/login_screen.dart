@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/register_screen.dart';
-import 'package:garbage_classifier_mobile/widgets/button.dart';
+import 'package:garbage_classifier_mobile/screens/widgets/atoms/button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -74,21 +74,11 @@ class _LoginScreenState extends State<LoginScreen>
               children: [
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: _emailController.text.isNotEmpty
-                          ? Colors.green
-                          : Colors.grey,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
                   child: TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
                       labelText: "Email",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -105,21 +95,11 @@ class _LoginScreenState extends State<LoginScreen>
                 const SizedBox(height: 16),
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: _passwordController.text.length >= 8
-                          ? Colors.green
-                          : Colors.grey,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
                   child: TextFormField(
                     controller: _passwordController,
                     decoration: const InputDecoration(
                       labelText: "Senha",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      border: OutlineInputBorder(),
                     ),
                     obscureText: true,
                     validator: (value) => value != null && value.length < 8

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/login_screen.dart';
-import 'package:garbage_classifier_mobile/widgets/button.dart';
+import 'package:garbage_classifier_mobile/screens/widgets/atoms/button.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -141,22 +141,13 @@ class _RegisterScreenState extends State<RegisterScreen>
                 const SizedBox(height: 16),
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: _cepController.text.length == 8
-                          ? Colors.green
-                          : Colors.grey,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
+                  decoration: const BoxDecoration(),
                   child: TextFormField(
                     controller: _cepController,
                     maxLength: 8,
                     decoration: const InputDecoration(
                       labelText: "CEP",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                      border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -177,6 +168,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                     labelText: "Rua",
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if ((value?.length ?? 0) < 3) {
+                      return "A rua deve ter ao menos 3 caracteres";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -185,6 +182,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                     labelText: "Bairro",
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if ((value?.length ?? 0) < 3) {
+                      return "O bairro deve ter ao menos 3 caracteres";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -193,6 +196,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                     labelText: "Cidade",
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if ((value?.length ?? 0) < 3) {
+                      return "A cidade deve ter ao menos 3 caracteres";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 24),
                 GestureDetector(
