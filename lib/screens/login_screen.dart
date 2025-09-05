@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen>
     );
   }
 
-  void _login() async {
+  void _performLogin() async {
     _buttonController.forward();
     await Future.delayed(const Duration(milliseconds: 100));
     _buttonController.reverse();
@@ -49,6 +49,32 @@ class _LoginScreenState extends State<LoginScreen>
     _passwordController.dispose();
     _buttonController.dispose();
     super.dispose();
+  }
+
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+    String? hint,
+    bool obscureText = false,
+    TextInputType keyboardType = TextInputType.text,
+    String? Function(String?)? validator,
+  }) {
+    return Semantics(
+      label: label,
+      hint: hint,
+      textField: true,
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
+        onChanged: (_) => setState(() {}),
+      ),
+    );
   }
 
   @override
@@ -72,74 +98,72 @@ class _LoginScreenState extends State<LoginScreen>
             key: _formKey,
             child: ListView(
               children: [
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  child: TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return "Digite seu email";
-                      if (!value.contains("@") || !value.contains(".")) {
-                        return "Digite um email válido";
-                      }
-                      return null;
-                    },
-                    onChanged: (_) => setState(() {}),
-                  ),
+                _buildTextField(
+                  label: "Email",
+                  controller: _emailController,
+                  hint: "Digite seu email",
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return "Digite seu email";
+                    if (!value.contains("@") || !value.contains(".")) {
+                      return "Digite um email válido";
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  child: TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: "Senha",
-                      border: OutlineInputBorder(),
-                    ),
-                    obscureText: true,
-                    validator: (value) => value != null && value.length < 8
-                        ? "A senha precisa ter pelo menos 8 caracteres"
-                        : null,
-                    onChanged: (_) => setState(() {}),
-                  ),
+                _buildTextField(
+                  label: "Senha",
+                  controller: _passwordController,
+                  hint: "Digite sua senha",
+                  obscureText: true,
+                  validator: (value) => value != null && value.length < 8
+                      ? "A senha precisa ter pelo menos 8 caracteres"
+                      : null,
                 ),
                 const SizedBox(height: 24),
-                GestureDetector(
-                  onTap: _login,
-                  child: AnimatedBuilder(
-                    animation: _buttonController,
-                    builder: (context, child) {
-                      double scale = 1 - _buttonController.value;
-                      return Transform.scale(scale: scale, child: child);
-                    },
-                    child: Button(
-                      icon: Icons.login,
-                      onPressed: _login,
-                      text: "Entrar",
+                Semantics(
+                  button: true,
+                  label: "Entrar",
+                  hint: "Clique para fazer login",
+                  child: GestureDetector(
+                    onTap: _performLogin,
+                    child: AnimatedBuilder(
+                      animation: _buttonController,
+                      builder: (context, child) {
+                        double scale = 1 - _buttonController.value;
+                        return Transform.scale(scale: scale, child: child);
+                      },
+                      child: Button(
+                        icon: Icons.login,
+                        onPressed: _performLogin,
+                        text: "Entrar",
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Center(
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterScreen()),
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Não possui conta? Cadastre-se",
-                        style: TextStyle(fontSize: 16),
+                  child: Semantics(
+                    button: true,
+                    label: "Não possui conta? Cadastre-se",
+                    hint: "Clique para ir para a tela de cadastro",
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const RegisterScreen()),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Não possui conta? Cadastre-se",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ),
                   ),

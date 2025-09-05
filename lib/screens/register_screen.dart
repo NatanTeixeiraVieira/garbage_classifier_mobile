@@ -39,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     );
   }
 
-  Future<void> _buscarEndereco(String cep) async {
+  Future<void> _fetchAddress(String cep) async {
     try {
       final response =
           await http.get(Uri.parse("https://viacep.com.br/ws/$cep/json/"));
@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     }
   }
 
-  void _register() async {
+  void _registerUser() async {
     _buttonController.forward();
     await Future.delayed(const Duration(milliseconds: 100));
     _buttonController.reverse();
@@ -90,6 +90,35 @@ class _RegisterScreenState extends State<RegisterScreen>
     super.dispose();
   }
 
+  Widget _buildTextField({
+    required String label,
+    required TextEditingController controller,
+    String? hint,
+    TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
+    String? Function(String?)? validator,
+    void Function(String)? onChanged,
+    bool readOnly = false,
+  }) {
+    return Semantics(
+      label: label,
+      hint: hint,
+      textField: true,
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
+        validator: validator,
+        onChanged: onChanged,
+        readOnly: readOnly,
+        decoration: InputDecoration(
+          labelText: label,
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,23 +140,19 @@ class _RegisterScreenState extends State<RegisterScreen>
             key: _formKey,
             child: ListView(
               children: [
-                TextFormField(
+                _buildTextField(
+                  label: "Nome",
                   controller: _nameController,
-                  decoration: const InputDecoration(
-                    labelText: "Nome",
-                    border: OutlineInputBorder(),
-                  ),
+                  hint: "Digite seu nome completo",
                   validator: (value) => value == null || value.isEmpty
                       ? "Digite o seu nome"
                       : null,
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                _buildTextField(
+                  label: "Email",
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
-                  ),
+                  hint: "Digite seu email",
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty)
@@ -139,35 +164,26 @@ class _RegisterScreenState extends State<RegisterScreen>
                   },
                 ),
                 const SizedBox(height: 16),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  decoration: const BoxDecoration(),
-                  child: TextFormField(
-                    controller: _cepController,
-                    maxLength: 8,
-                    decoration: const InputDecoration(
-                      labelText: "CEP",
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    validator: (value) {
-                      if (value?.length != 8) return "CEP inválido";
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {});
-                      if (value.length == 8) _buscarEndereco(value);
-                    },
-                  ),
+                _buildTextField(
+                  label: "CEP",
+                  controller: _cepController,
+                  hint: "Digite seu CEP (apenas números)",
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (value) {
+                    if (value?.length != 8) return "CEP inválido";
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {});
+                    if (value.length == 8) _fetchAddress(value);
+                  },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                _buildTextField(
+                  label: "Rua",
                   controller: _streetController,
-                  decoration: const InputDecoration(
-                    labelText: "Rua",
-                    border: OutlineInputBorder(),
-                  ),
+                  hint: "Nome da rua",
                   validator: (value) {
                     if ((value?.length ?? 0) < 3) {
                       return "A rua deve ter ao menos 3 caracteres";
@@ -176,12 +192,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                _buildTextField(
+                  label: "Bairro",
                   controller: _neighborhoodController,
-                  decoration: const InputDecoration(
-                    labelText: "Bairro",
-                    border: OutlineInputBorder(),
-                  ),
+                  hint: "Nome do bairro",
                   validator: (value) {
                     if ((value?.length ?? 0) < 3) {
                       return "O bairro deve ter ao menos 3 caracteres";
@@ -190,12 +204,10 @@ class _RegisterScreenState extends State<RegisterScreen>
                   },
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
+                _buildTextField(
+                  label: "Cidade",
                   controller: _cityController,
-                  decoration: const InputDecoration(
-                    labelText: "Cidade",
-                    border: OutlineInputBorder(),
-                  ),
+                  hint: "Nome da cidade",
                   validator: (value) {
                     if ((value?.length ?? 0) < 3) {
                       return "A cidade deve ter ao menos 3 caracteres";
@@ -204,37 +216,47 @@ class _RegisterScreenState extends State<RegisterScreen>
                   },
                 ),
                 const SizedBox(height: 24),
-                GestureDetector(
-                  onTap: _register,
-                  child: AnimatedBuilder(
-                    animation: _buttonController,
-                    builder: (context, child) {
-                      double scale = 1 - _buttonController.value;
-                      return Transform.scale(scale: scale, child: child);
-                    },
-                    child: Button(
-                      icon: Icons.person_add,
-                      onPressed: _register,
-                      text: "Cadastrar",
+                Semantics(
+                  button: true,
+                  label: "Cadastrar",
+                  hint: "Clique para criar sua conta",
+                  child: GestureDetector(
+                    onTap: _registerUser,
+                    child: AnimatedBuilder(
+                      animation: _buttonController,
+                      builder: (context, child) {
+                        double scale = 1 - _buttonController.value;
+                        return Transform.scale(scale: scale, child: child);
+                      },
+                      child: Button(
+                        icon: Icons.person_add,
+                        onPressed: _registerUser,
+                        text: "Cadastrar",
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Center(
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(8),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Já possui conta? Entrar",
-                        style: TextStyle(fontSize: 16),
+                  child: Semantics(
+                    button: true,
+                    label: "Já possui conta? Entrar",
+                    hint: "Clique para ir para a tela de login",
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(8),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Já possui conta? Entrar",
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                     ),
                   ),
