@@ -10,20 +10,34 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      final email = _emailController.text;
-      final password = _passwordController.text;
+  late AnimationController _buttonController;
 
+  @override
+  void initState() {
+    super.initState();
+    _buttonController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      lowerBound: 0.0,
+      upperBound: 0.1,
+    );
+  }
+
+  void _login() async {
+    _buttonController.forward();
+    await Future.delayed(const Duration(milliseconds: 100));
+    _buttonController.reverse();
+
+    if (_formKey.currentState!.validate()) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-
       _emailController.clear();
       _passwordController.clear();
     }
@@ -33,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _buttonController.dispose();
     super.dispose();
   }
 
@@ -57,54 +72,95 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: ListView(
               children: [
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder(),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: _emailController.text.isNotEmpty
+                          ? Colors.green
+                          : Colors.grey,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Digite seu email";
-                    }
-
-                    if (!value.contains("@") || !value.contains(".")) {
-                      return "Digite um email válido";
-                    }
-                    return null;
-                  },
+                  child: TextFormField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: "Email",
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty)
+                        return "Digite seu email";
+                      if (!value.contains("@") || !value.contains(".")) {
+                        return "Digite um email válido";
+                      }
+                      return null;
+                    },
+                    onChanged: (_) => setState(() {}),
+                  ),
                 ),
                 const SizedBox(height: 16),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: "Senha",
-                    border: OutlineInputBorder(),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: _passwordController.text.length >= 8
+                          ? Colors.green
+                          : Colors.grey,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  obscureText: true,
-                  validator: (value) => value != null && value.length < 8
-                      ? "A senha precisa ter pelo menos 8 caracteres"
-                      : null,
+                  child: TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: "Senha",
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    obscureText: true,
+                    validator: (value) => value != null && value.length < 8
+                        ? "A senha precisa ter pelo menos 8 caracteres"
+                        : null,
+                    onChanged: (_) => setState(() {}),
+                  ),
                 ),
                 const SizedBox(height: 24),
-                Button(
-                  icon: Icons.login,
-                  onPressed: _login,
-                  text: "Entrar",
+                GestureDetector(
+                  onTap: _login,
+                  child: AnimatedBuilder(
+                    animation: _buttonController,
+                    builder: (context, child) {
+                      double scale = 1 - _buttonController.value;
+                      return Transform.scale(scale: scale, child: child);
+                    },
+                    child: Button(
+                      icon: Icons.login,
+                      onPressed: _login,
+                      text: "Entrar",
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 12),
                 Center(
-                  child: TextButton(
-                    onPressed: () {
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(8),
+                    onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const RegisterScreen()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterScreen()),
+                      );
                     },
-                    child: const Text(
-                      "Não possui conta? Cadastre-se",
-                      style: TextStyle(fontSize: 16),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Não possui conta? Cadastre-se",
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
