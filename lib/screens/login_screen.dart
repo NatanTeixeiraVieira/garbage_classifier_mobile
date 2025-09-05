@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/register_screen.dart';
-import 'package:garbage_classifier_mobile/screens/widgets/atoms/button.dart';
+import 'package:garbage_classifier_mobile/shared/widgets/atoms/button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

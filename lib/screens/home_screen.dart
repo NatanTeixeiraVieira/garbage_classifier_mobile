@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_classifier_mobile/screens/widgets/atoms/button.dart';
+import 'package:garbage_classifier_mobile/shared/widgets/atoms/button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
