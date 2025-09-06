@@ -6,7 +6,9 @@ class HomeScreen extends StatelessWidget {
 
   void _startCamera(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Abrir câmera para classificar o lixo")),
+      const SnackBar(
+          content:
+              Text("Futuramente vai abrir a câmera para classificar o lixo")),
     );
   }
 
