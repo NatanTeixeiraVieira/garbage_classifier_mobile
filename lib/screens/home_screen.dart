@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastro"),
+        title: const Text("Início"),
         backgroundColor: Colors.green[50]!,
       ),
       body: Container(

@@ -88,21 +88,23 @@ class _RegisterFormState extends State<RegisterForm>
   }
 
   void handleRegisterUser() async {
-    _buttonController.forward();
-    await Future.delayed(const Duration(milliseconds: 100));
-    _buttonController.reverse();
-
     if (_formKey.currentState!.validate()) {
-      await _dbHelper.registerUser(
-          name: _nameController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
-          cep: _cepController.text,
-          street: _streetController.text,
-          neighborhood: _neighborhoodController.text,
-          city: _cityController.text);
-
-      widget.onRegisterSuccess();
+      try {
+        await _dbHelper.registerUser(
+            name: _nameController.text,
+            email: _emailController.text,
+            password: _passwordController.text,
+            cep: _cepController.text,
+            street: _streetController.text,
+            neighborhood: _neighborhoodController.text,
+            city: _cityController.text);
+        widget.onRegisterSuccess();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString().replaceAll('Exception: ', ''))),
+        );
+        return;
+      }
     }
   }
 
