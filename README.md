@@ -13,3 +13,5 @@ Outra tela implementada foi a inicial, que conterá um botão para abrir a câme
 O projeto passou por uma refatoração inicial de UI/UX, aplicando princípios como Atomic Design, onde os widgets foram organizados em átomos, moléculas e organismos, tornando widgets reutilizáveis e facilitando a manutenção do código. Foram incluídas microinterações, como animações e feedback visual ao interagir com elementos da interface, utilizando InkWell e GestureDetector, modificando a escala dos botões de login e cadastro quando eles são pressionados.
 
 Além disso, também foram consideradas práticas básicas de acessibilidade, como o uso de Semantics em elementos importantes, permitindo melhor navegação para usuários de leitores de tela. Fora isso, o sistema integra uma API pública que traz o endereço do usuário com base em seu CEP, preenchendo os demais campos. O aplicativo tem formulários contendo e validação de todos os campo a fim de garantir que os campos estejam preenchidos corretamente antes do envio, utilizando os validadores do Flutter.
+
+Ademais, foi implementado um banco de dados local para salvar o cadastro de usuário e fazer login verifiando os dados salvos
