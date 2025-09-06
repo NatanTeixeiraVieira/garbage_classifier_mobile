@@ -23,9 +23,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         inputDecorationTheme: const InputDecorationTheme(
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: sky500, width: 2),
+            borderSide:
+                BorderSide(color: Color.fromARGB(255, 67, 214, 121), width: 2),
           ),
-          labelStyle: TextStyle(color: Colors.black87),
+          labelStyle: TextStyle(color: Color.fromARGB(221, 7, 7, 7)),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
