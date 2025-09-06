@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/shared/widgets/atoms/gradient_background.dart';
 import 'package:garbage_classifier_mobile/shared/widgets/organisms/register_form.dart';
-
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:garbage_classifier_mobile/screens/login_screen.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/database/database_helper.dart';
-import 'package:garbage_classifier_mobile/models/user_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../molecules/personal_info_form_section.dart';

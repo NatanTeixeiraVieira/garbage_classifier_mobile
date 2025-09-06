@@ -26,6 +26,27 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute('''
+        CREATE TABLE users(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          email TEXT UNIQUE NOT NULL,
+          password TEXT NOT NULL,
+          cep TEXT NOT NULL,
+          street TEXT NOT NULL,
+          neighborhood TEXT NOT NULL,
+          city TEXT NOT NULL,
+          created_at INTEGER NOT NULL,
+          updated_at INTEGER NOT NULL
+        )
+      ''');
+
+      await db.execute('CREATE INDEX idx_users_email ON users(email)');
+    }
+  }
+
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE users(
@@ -54,27 +75,6 @@ class DatabaseHelper {
 
     await db.execute('CREATE INDEX idx_users_email ON users(email)');
     await db.execute('CREATE INDEX idx_todos_userId ON todos(userId)');
-  }
-
-  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
-      await db.execute('''
-        CREATE TABLE users(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT NOT NULL,
-          email TEXT UNIQUE NOT NULL,
-          password TEXT NOT NULL,
-          cep TEXT NOT NULL,
-          street TEXT NOT NULL,
-          neighborhood TEXT NOT NULL,
-          city TEXT NOT NULL,
-          created_at INTEGER NOT NULL,
-          updated_at INTEGER NOT NULL
-        )
-      ''');
-
-      await db.execute('CREATE INDEX idx_users_email ON users(email)');
-    }
   }
 
   Future<int> insertUser(User user) async {
