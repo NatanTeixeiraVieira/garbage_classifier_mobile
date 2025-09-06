@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_classifier_mobile/screens/register_screen.dart'; // importe sua tela aqui
+import 'package:garbage_classifier_mobile/screens/register_screen.dart';
 
 void main() {
   runApp(const MyApp());

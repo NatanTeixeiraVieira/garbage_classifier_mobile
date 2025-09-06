@@ -34,7 +34,6 @@ class HomeScreen extends StatelessWidget {
             const Icon(
               Icons.recycling,
               size: 120,
-              // color: Colors.white,
             ),
             const SizedBox(height: 24),
             const Text(
@@ -43,7 +42,6 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                // color: Colors.white,
               ),
             ),
             const SizedBox(height: 12),
@@ -52,7 +50,6 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
-                // color: Colors.white70,
               ),
             ),
             const SizedBox(height: 40),

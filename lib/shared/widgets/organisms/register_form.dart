@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_classifier_mobile/database/database_helper.dart';
+import 'package:garbage_classifier_mobile/models/user_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../molecules/personal_info_form_section.dart';
@@ -22,6 +24,7 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance;
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -84,20 +87,29 @@ class _RegisterFormState extends State<RegisterForm>
     }
   }
 
-  void _handleCepChange(String value) {
-    setState(() {});
-    if (value.length == 8) {
-      _fetchAddress(value);
-    }
-  }
-
-  void _registerUser() async {
+  void handleRegisterUser() async {
     _buttonController.forward();
     await Future.delayed(const Duration(milliseconds: 100));
     _buttonController.reverse();
 
     if (_formKey.currentState!.validate()) {
+      await _dbHelper.registerUser(
+          name: _nameController.text,
+          email: _emailController.text,
+          password: _passwordController.text,
+          cep: _cepController.text,
+          street: _streetController.text,
+          neighborhood: _neighborhoodController.text,
+          city: _cityController.text);
+
       widget.onRegisterSuccess();
+    }
+  }
+
+  void _handleCepChange(String value) {
+    setState(() {});
+    if (value.length == 8) {
+      _fetchAddress(value);
     }
   }
 
@@ -122,7 +134,7 @@ class _RegisterFormState extends State<RegisterForm>
           ),
           const SizedBox(height: 24),
           RegisterActions(
-            onRegister: _registerUser,
+            onRegister: handleRegisterUser,
             onGoToLogin: widget.onGoToLogin,
             buttonAnimationController: _buttonController,
           ),
