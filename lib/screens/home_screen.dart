@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/shared/widgets/atoms/button.dart';
+import 'camera_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final String garbage;
+
+  const HomeScreen({super.key, this.garbage = ''});
 
   void _startCamera(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          content: Text(
-              "Futuramente vai abrir a câmera para classificar o tipo de lixo")),
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const CameraScreen(),
+      ),
     );
   }
 
@@ -60,6 +63,17 @@ class HomeScreen extends StatelessWidget {
               icon: Icons.camera_alt,
               onPressed: () => _startCamera(context),
               text: "Escanear",
+            ),
+            if (garbage != '') const SizedBox(height: 50),
+            if (garbage != '')
+              Text(
+                'O lixo verificado é $garbage',
+                style: const TextStyle(fontSize: 24),
+              ),
+            const SizedBox(height: 50),
+            const Text(
+              'Por favor, verifique a veracidade das informações. O sistema pode cometer erros.',
+              textAlign: TextAlign.center,
             )
           ],
         ),
