@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:permission_handler/permission_handler.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -23,6 +24,11 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _setupCamera() async {
+    final status = await Permission.camera.request();
+    if (status != PermissionStatus.granted) {
+      throw Exception("Permissão da câmera negada");
+    }
+
     final cameras = await availableCameras();
     final firstCamera = cameras.first;
 
@@ -32,6 +38,7 @@ class _CameraScreenState extends State<CameraScreen> {
     );
 
     _initializeControllerFuture = _controller!.initialize();
+    setState(() {}); // força rebuild quando inicializar
   }
 
   @override
@@ -44,15 +51,13 @@ class _CameraScreenState extends State<CameraScreen> {
     try {
       await _initializeControllerFuture;
 
-      // tira a foto
       final image = await _controller!.takePicture();
 
       setState(() => _isSending = true);
 
-      // monta request multipart
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://604064fd7f5a.ngrok-free.app/classify'),
+        Uri.parse('https://aa7a9974d1cf.ngrok-free.app/classify'),
       );
 
       request.headers.addAll({
@@ -61,7 +66,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
       request.files.add(
         await http.MultipartFile.fromPath(
-          'file', // mesmo nome do campo no curl
+          'file',
           image.path,
         ),
       );

@@ -62,19 +62,6 @@ class DatabaseHelper {
         updated_at INTEGER NOT NULL
       )
     ''');
-
-    await db.execute('''
-      CREATE TABLE todos(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        userId INTEGER,
-        title TEXT,
-        completed INTEGER,
-        FOREIGN KEY (userId) REFERENCES users (id)
-      )
-    ''');
-
-    await db.execute('CREATE INDEX idx_users_email ON users(email)');
-    await db.execute('CREATE INDEX idx_todos_userId ON todos(userId)');
   }
 
   Future<int> insertUser(User user) async {
