@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_classifier_mobile/screens/home_screen.dart';
+import 'package:garbage_classifier_mobile/services/firebase_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
@@ -57,10 +58,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
       final request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://aa7a9974d1cf.ngrok-free.app/classify'),
+        Uri.parse('https://periclinal-outmoded-gussie.ngrok-free.dev/classify'),
       );
 
-      request.headers.addAll({
+      request.headers.addAll({ 
         "accept": "application/json",
       });
 
@@ -81,6 +82,18 @@ class _CameraScreenState extends State<CameraScreen> {
         final jsonResponse = jsonDecode(respStr);
 
         final className = jsonResponse['result']['class_name'];
+
+        // Salvar resultado no Realtime Database
+        try {
+          await FirebaseService.salvarResultado(className, "usuarioId");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Resultado salvo com sucesso!")),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Erro ao salvar: $e")),
+          );
+        }
 
         Navigator.push(
             context,

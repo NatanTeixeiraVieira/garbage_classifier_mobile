@@ -56,6 +56,9 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+  firebase_core: ^2.0.0
+  firebase_storage: ^11.0.0
+  firebase_database: ^10.0.0
 # The following section is specific to Flutter packages.
 flutter:
   # The following line ensures that the Material Icons font is

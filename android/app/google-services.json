@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "870575587833",
+    "firebase_url": "https://classificacao-de-lixo-com-ia-default-rtdb.firebaseio.com",
+    "project_id": "classificacao-de-lixo-com-ia",
+    "storage_bucket": "classificacao-de-lixo-com-ia.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870575587833:android:bf0953422c4b94c092bd28",
+        "android_client_info": {
+          "package_name": "com.example.garbage_classifier_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQq9sh7dmVZi8aKlL-mhsTrm6eAfnmnyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
