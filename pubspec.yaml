@@ -41,6 +41,8 @@ dependencies:
   crypto: ^3.0.6
   camera: ^0.10.5+2
   permission_handler: ^11.3.1
+  get_it: ^7.6.7
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
