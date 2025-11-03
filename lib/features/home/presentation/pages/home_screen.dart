@@ -32,48 +32,50 @@ class HomeScreen extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.recycling,
-              size: 120,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              "Classificador de Lixo",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.recycling,
+                size: 120,
               ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              "Use a câmera para identificar o tipo de lixo e contribuir com a reciclagem!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
+              const SizedBox(height: 24),
+              const Text(
+                "Classificador de Lixo",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            Button(
-              icon: Icons.camera_alt,
-              onPressed: () => _startCamera(context),
-              text: "Escanear",
-            ),
-            if (garbage != '') const SizedBox(height: 50),
-            if (garbage != '')
-              Text(
-                'O lixo verificado é $garbage',
-                style: const TextStyle(fontSize: 24),
+              const SizedBox(height: 12),
+              const Text(
+                "Use a câmera para identificar o tipo de lixo e contribuir com a reciclagem!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
-            const SizedBox(height: 50),
-            const Text(
-              'Por favor, verifique a veracidade das informações. O sistema pode cometer erros.',
-              textAlign: TextAlign.center,
-            )
-          ],
+              const SizedBox(height: 40),
+              Button(
+                icon: Icons.camera_alt,
+                onPressed: () => _startCamera(context),
+                text: "Escanear",
+              ),
+              if (garbage != '') const SizedBox(height: 50),
+              if (garbage != '')
+                Text(
+                  'O lixo verificado é $garbage',
+                  style: const TextStyle(fontSize: 24),
+                ),
+              const SizedBox(height: 50),
+              const Text(
+                'Por favor, verifique a veracidade das informações. O sistema pode cometer erros.',
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
         ),
       ),
     );
