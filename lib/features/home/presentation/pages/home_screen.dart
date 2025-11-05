@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../shared/widgets/atoms/button.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/button.dart';
 import '../../../camera/presentation/pages/camera_screen.dart';
 
 class HomeScreen extends StatelessWidget {

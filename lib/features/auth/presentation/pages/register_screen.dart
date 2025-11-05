@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/pages/login_screen.dart';
 import 'package:garbage_classifier_mobile/features/home/presentation/pages/home_screen.dart';
-import 'package:garbage_classifier_mobile/screens/login_screen.dart';
 import '../../presentation/widgets/atoms/gradient_background.dart';
 import '../../presentation/widgets/organisms/register_form.dart';
 import '../cubits/register_cubit.dart';

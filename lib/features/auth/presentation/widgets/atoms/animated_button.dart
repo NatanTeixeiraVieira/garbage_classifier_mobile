@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_classifier_mobile/shared/widgets/atoms/button.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/button.dart';
 
 class AnimatedButton extends StatelessWidget {
   final String text;

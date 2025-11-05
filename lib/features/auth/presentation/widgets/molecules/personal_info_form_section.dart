@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_classifier_mobile/shared/widgets/atoms/text_field_app.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/text_field_app.dart';
 
 class PersonalInfoFormSection extends StatelessWidget {
   final TextEditingController nameController;

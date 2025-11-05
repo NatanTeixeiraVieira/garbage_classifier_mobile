@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_classifier_mobile/screens/home_screen.dart';
-import 'package:garbage_classifier_mobile/screens/register_screen.dart';
-import 'package:garbage_classifier_mobile/shared/widgets/atoms/gradient_background.dart';
-import 'package:garbage_classifier_mobile/shared/widgets/organisms/login_form.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/pages/register_screen.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/gradient_background.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/organisms/login_form.dart';
+import 'package:garbage_classifier_mobile/features/home/presentation/pages/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
