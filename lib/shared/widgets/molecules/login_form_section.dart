@@ -47,6 +47,30 @@ class LoginFormSection extends StatelessWidget {
             return null;
           },
         ),
+        
+        const SizedBox(height: 16),
+        
+        // Link "Esqueceu a senha?"
+        Align(
+          alignment: Alignment.centerRight,
+          child: GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Funcionalidade em desenvolvimento"),
+                ),
+              );
+            },
+            child: Text(
+              "Esqueceu a senha?",
+              style: TextStyle(
+                color: Colors.green[600],
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

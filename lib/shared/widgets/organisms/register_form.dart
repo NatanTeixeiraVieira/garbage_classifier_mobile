@@ -118,26 +118,103 @@ class _RegisterFormState extends State<RegisterForm>
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PersonalInfoFormSection(
-            nameController: _nameController,
-            emailController: _emailController,
-            passwordController: _passwordController,
+          // Seção de informações pessoais
+          _buildSectionCard(
+            title: "Informações Pessoais",
+            icon: Icons.person_outline,
+            child: PersonalInfoFormSection(
+              nameController: _nameController,
+              emailController: _emailController,
+              passwordController: _passwordController,
+            ),
           ),
-          const SizedBox(height: 16),
-          AddressFormSection(
-            cepController: _cepController,
-            streetController: _streetController,
-            neighborhoodController: _neighborhoodController,
-            cityController: _cityController,
-            onCepChanged: _handleCepChange,
-          ),
+          
           const SizedBox(height: 24),
+          
+          // Seção de endereço
+          _buildSectionCard(
+            title: "Endereço",
+            icon: Icons.location_on_outlined,
+            child: AddressFormSection(
+              cepController: _cepController,
+              streetController: _streetController,
+              neighborhoodController: _neighborhoodController,
+              cityController: _cityController,
+              onCepChanged: _handleCepChange,
+            ),
+          ),
+          
+          const SizedBox(height: 32),
+          
+          // Ações
           RegisterActions(
             onRegister: handleRegisterUser,
             onGoToLogin: widget.onGoToLogin,
             buttonAnimationController: _buttonController,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionCard({
+    required String title,
+    required IconData icon,
+    required Widget child,
+  }) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Cabeçalho da seção
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.green[50],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: Colors.green[700],
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[800],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // Conteúdo da seção
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: child,
           ),
         ],
       ),

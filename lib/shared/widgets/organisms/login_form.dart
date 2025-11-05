@@ -67,13 +67,35 @@ class _LoginFormState extends State<LoginForm>
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          LoginFormSection(
-            emailController: _emailController,
-            passwordController: _passwordController,
+          // Card do formulário
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: LoginFormSection(
+                emailController: _emailController,
+                passwordController: _passwordController,
+              ),
+            ),
           ),
-          const SizedBox(height: 24),
+          
+          const SizedBox(height: 32),
+          
+          // Ações
           LoginActions(
             onLogin: _handleLogin,
             onGoToRegister: widget.onGoToRegister,
