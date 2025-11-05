@@ -11,12 +11,11 @@ import 'features/camera/data/repositories/garbage_classification_repository.dart
 import 'features/camera/domain/repositories/garbage_classification_repository.dart';
 import 'features/camera/domain/usecases/classify_garbage_usecase.dart';
 import 'features/camera/presentation/cubits/camera_cubit.dart';
-import 'features/auth/presentation/cubits/login_cubit.dart'; // <-- import adicionado
+import 'features/auth/presentation/cubits/login_cubit.dart';
 
 final getIt = GetIt.instance;
 
 void setupDependencies() {
-  // Auth Feature
   getIt.registerLazySingleton<IPasswordHashService>(
     () => Sha256PasswordService(),
   );
@@ -48,7 +47,6 @@ void setupDependencies() {
     () => LoginCubit(getIt<LoginUserUseCase>()),
   );
 
-  // Camera Feature
   getIt.registerLazySingleton<IGarbageClassificationRepository>(
     () => GarbageClassificationRepository(
       baseUrl: 'https://aa7a9974d1cf.ngrok-free.app',
