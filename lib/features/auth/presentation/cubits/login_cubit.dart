@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/entities/user.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/usecases/login_user_usecase.dart';
+import 'package:garbage_classifier_mobile/features/auth/domain/usecases/save_session_usecase.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -22,8 +23,10 @@ class LoginFailure extends LoginState {
 
 class LoginCubit extends Cubit<LoginState> {
   final LoginUserUseCase _loginUseCase;
+  final SaveSessionUseCase _saveSessionUseCase;
 
-  LoginCubit(this._loginUseCase) : super(LoginInitial());
+  LoginCubit(this._loginUseCase, this._saveSessionUseCase)
+      : super(LoginInitial());
 
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
@@ -32,6 +35,8 @@ class LoginCubit extends Cubit<LoginState> {
       // ajuste para _loginUseCase.execute(...) ou o nome correto.
       final user = await _loginUseCase(email.trim(), password);
       if (user != null) {
+        // persist session
+        if (user.id != null) await _saveSessionUseCase(user.id!);
         emit(LoginSuccess(user));
       } else {
         emit(LoginFailure('Credenciais inválidas'));

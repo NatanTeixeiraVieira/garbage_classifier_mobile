@@ -7,6 +7,12 @@ import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/domain/usecases/login_user_usecase.dart';
 import 'features/auth/domain/usecases/register_user_usecase.dart';
 import 'features/auth/presentation/cubits/register_cubit.dart';
+import 'features/auth/presentation/cubits/app_cubit.dart';
+import 'features/auth/domain/repositories/session_repository.dart';
+import 'features/auth/data/repositories/session_repository_impl.dart';
+import 'features/auth/domain/usecases/save_session_usecase.dart';
+import 'features/auth/domain/usecases/get_session_userid_usecase.dart';
+import 'features/auth/domain/usecases/clear_session_usecase.dart';
 import 'features/camera/data/repositories/garbage_classification_repository.dart';
 import 'features/camera/domain/repositories/garbage_classification_repository.dart';
 import 'features/camera/domain/usecases/classify_garbage_usecase.dart';
@@ -34,17 +40,30 @@ void setupDependencies() {
   getIt.registerLazySingleton(
     () => RegisterUserUseCase(getIt<IAuthRepository>()),
   );
-
   getIt.registerLazySingleton(
     () => LoginUserUseCase(getIt<IAuthRepository>()),
   );
 
+  // session repository + usecases
+  getIt.registerLazySingleton<ISessionRepository>(
+    () => SessionRepositoryImpl(getIt<ILocalDatabaseDataSource>()),
+  );
+
+  getIt.registerLazySingleton(
+      () => SaveSessionUseCase(getIt<ISessionRepository>()));
+  getIt.registerLazySingleton(
+      () => GetSessionUserIdUseCase(getIt<ISessionRepository>()));
+  getIt.registerLazySingleton(
+      () => ClearSessionUseCase(getIt<ISessionRepository>()));
+
+  // cubits: register and login now receive SaveSessionUseCase to persist session
   getIt.registerFactory(
-    () => RegisterCubit(getIt<RegisterUserUseCase>()),
+    () => RegisterCubit(
+        getIt<RegisterUserUseCase>(), getIt<SaveSessionUseCase>()),
   );
 
   getIt.registerFactory(
-    () => LoginCubit(getIt<LoginUserUseCase>()),
+    () => LoginCubit(getIt<LoginUserUseCase>(), getIt<SaveSessionUseCase>()),
   );
 
   getIt.registerLazySingleton<IGarbageClassificationRepository>(
@@ -62,4 +81,7 @@ void setupDependencies() {
   getIt.registerFactory(
     () => CameraCubit(getIt<ClassifyGarbageUseCase>()),
   );
+
+  // AppCubit holds lightweight app session state and can clear the session
+  getIt.registerLazySingleton(() => AppCubit(getIt<ClearSessionUseCase>()));
 }
