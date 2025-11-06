@@ -42,15 +42,17 @@ class CameraScreen extends StatelessWidget {
             title: const Text('Câmera'),
             backgroundColor: Colors.green[50],
           ),
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.green[50]!, Colors.green[200]!],
+          body: SizedBox.expand(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.green[50]!, Colors.green[200]!],
+                ),
               ),
+              child: _buildBody(context, state),
             ),
-            child: _buildBody(context, state),
           ),
           floatingActionButton: state is CameraReady
               ? FloatingActionButton(
