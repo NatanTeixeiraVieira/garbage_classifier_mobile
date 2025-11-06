@@ -3,7 +3,6 @@ import 'app_state.dart';
 export 'app_state.dart';
 import '../../domain/usecases/clear_session_usecase.dart';
 
-/// Global app cubit to hold basic session state (current user id) and handle logout.
 class AppCubit extends Cubit<AppState> {
   final ClearSessionUseCase _clearSessionUseCase;
 

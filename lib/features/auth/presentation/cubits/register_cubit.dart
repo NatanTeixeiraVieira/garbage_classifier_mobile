@@ -35,7 +35,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         city: city,
       );
       emit(RegisterSuccess(user));
-      // Persist session after successful registration (store user id)
+
       if (user.id != null) {
         await _saveSessionUseCase(user.id!);
       }
