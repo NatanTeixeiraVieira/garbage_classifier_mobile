@@ -3,6 +3,9 @@ import 'package:garbage_classifier_mobile/features/auth/presentation/pages/regis
 import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/gradient_background.dart';
 import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/organisms/login_form.dart';
 import 'package:garbage_classifier_mobile/features/home/presentation/pages/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garbage_classifier_mobile/injection.dart';
+import 'package:garbage_classifier_mobile/features/auth/presentation/cubits/login_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -32,9 +35,12 @@ class LoginScreen extends StatelessWidget {
         colors: [Colors.green[50]!, Colors.green[200]!],
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: LoginForm(
-            onLoginSuccess: () => _handleLoginSuccess(context),
-            onGoToRegister: () => _handleGoToRegister(context),
+          child: BlocProvider(
+            create: (_) => getIt<LoginCubit>(),
+            child: LoginForm(
+              onLoginSuccess: () => _handleLoginSuccess(context),
+              onGoToRegister: () => _handleGoToRegister(context),
+            ),
           ),
         ),
       ),
