@@ -4,16 +4,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/entities/user.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/usecases/register_user_usecase.dart';
+import 'package:garbage_classifier_mobile/features/auth/domain/usecases/save_session_usecase.dart';
 import 'package:garbage_classifier_mobile/features/auth/presentation/cubits/register_cubit.dart';
 
 class _MockRegisterUseCase extends Mock implements RegisterUserUseCase {}
 
+class _MockSaveSessionUseCase extends Mock implements SaveSessionUseCase {}
+
 void main() {
-  late _MockRegisterUseCase usecase;
+  late _MockRegisterUseCase registerUseCase;
+  late _MockSaveSessionUseCase saveSessionUseCase;
 
   setUp(() {
-    // setUp: recria o mock do use case a cada teste
-    usecase = _MockRegisterUseCase();
+    // setUp: recria os mocks dos use cases a cada teste
+    registerUseCase = _MockRegisterUseCase();
+    saveSessionUseCase = _MockSaveSessionUseCase();
   });
 
   blocTest<RegisterCubit, RegisterState>(
@@ -31,7 +36,7 @@ void main() {
         city: 'Cidade',
       );
 
-      when(() => usecase(
+      when(() => registerUseCase(
             name: any(named: 'name'),
             email: any(named: 'email'),
             password: any(named: 'password'),
@@ -40,7 +45,9 @@ void main() {
             neighborhood: any(named: 'neighborhood'),
             city: any(named: 'city'),
           )).thenAnswer((_) async => user);
-      return RegisterCubit(usecase); // build: cria o cubit a ser testado
+      when(() => saveSessionUseCase(user.id ?? 2))
+          .thenAnswer((_) async => true);
+      return RegisterCubit(registerUseCase, saveSessionUseCase);
     },
     act: (cubit) => cubit.register(
       name: 'Ana',
@@ -51,13 +58,16 @@ void main() {
       neighborhood: 'Bairro',
       city: 'Cidade',
     ),
-    expect: () => [isA<RegisterLoading>(), isA<RegisterSuccess>()], // assert: ordem dos estados
+    expect: () => [
+      isA<RegisterLoading>(),
+      isA<RegisterSuccess>()
+    ], // assert: ordem dos estados
   );
 
   blocTest<RegisterCubit, RegisterState>(
     'emite [Loading, Failure] quando usecase lança exceção',
     build: () {
-      when(() => usecase(
+      when(() => registerUseCase(
             name: any(named: 'name'),
             email: any(named: 'email'),
             password: any(named: 'password'),
@@ -66,7 +76,7 @@ void main() {
             neighborhood: any(named: 'neighborhood'),
             city: any(named: 'city'),
           )).thenThrow(Exception('erro'));
-      return RegisterCubit(usecase);
+      return RegisterCubit(registerUseCase, saveSessionUseCase);
     },
     act: (cubit) => cubit.register(
       name: 'Ana',
@@ -80,5 +90,3 @@ void main() {
     expect: () => [isA<RegisterLoading>(), isA<RegisterFailure>()],
   );
 }
-
-

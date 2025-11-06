@@ -4,16 +4,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/entities/user.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/usecases/login_user_usecase.dart';
+import 'package:garbage_classifier_mobile/features/auth/domain/usecases/save_session_usecase.dart';
 import 'package:garbage_classifier_mobile/features/auth/presentation/cubits/login_cubit.dart';
 
 class _MockLoginUseCase extends Mock implements LoginUserUseCase {}
 
+class _MockSaveSessionUseCase extends Mock implements SaveSessionUseCase {}
+
 void main() {
-  late _MockLoginUseCase usecase;
+  late _MockLoginUseCase loginUseCase;
+  late _MockSaveSessionUseCase saveSessionUseCase;
 
   setUp(() {
-    // setUp: cria o mock do use case antes de cada teste
-    usecase = _MockLoginUseCase();
+    // setUp: cria os mocks dos use cases antes de cada teste
+    loginUseCase = _MockLoginUseCase();
+    saveSessionUseCase = _MockSaveSessionUseCase();
   });
 
   blocTest<LoginCubit, LoginState>(
@@ -30,19 +35,23 @@ void main() {
         neighborhood: 'Bairro',
         city: 'Cidade',
       );
-      when(() => usecase('john@doe.com', '12345678'))
+      when(() => loginUseCase('john@doe.com', '12345678'))
           .thenAnswer((_) async => user);
-      return LoginCubit(usecase); // build: cria o cubit a ser testado
+      when(() => saveSessionUseCase(user.id ?? 1))
+          .thenAnswer((_) async => true);
+      return LoginCubit(loginUseCase, saveSessionUseCase);
     },
-    act: (cubit) => cubit.login(email: ' john@doe.com ', password: '12345678'), // act: dispara a ação
-    expect: () => [isA<LoginLoading>(), isA<LoginSuccess>()], // assert: ordem dos estados
+    act: (cubit) => cubit.login(
+        email: ' john@doe.com ', password: '12345678'), // act: dispara a ação
+    expect: () =>
+        [isA<LoginLoading>(), isA<LoginSuccess>()], // assert: ordem dos estados
   );
 
   blocTest<LoginCubit, LoginState>(
     'emite [Loading, Failure] quando login retorna null',
     build: () {
-      when(() => usecase('x@y.com', 'bad')).thenAnswer((_) async => null);
-      return LoginCubit(usecase);
+      when(() => loginUseCase('x@y.com', 'bad')).thenAnswer((_) async => null);
+      return LoginCubit(loginUseCase, saveSessionUseCase);
     },
     act: (cubit) => cubit.login(email: 'x@y.com', password: 'bad'),
     expect: () => [isA<LoginLoading>(), isA<LoginFailure>()],
@@ -51,12 +60,10 @@ void main() {
   blocTest<LoginCubit, LoginState>(
     'emite [Loading, Failure] quando usecase lança exceção',
     build: () {
-      when(() => usecase(any(), any())).thenThrow(Exception('erro'));
-      return LoginCubit(usecase);
+      when(() => loginUseCase(any(), any())).thenThrow(Exception('erro'));
+      return LoginCubit(loginUseCase, saveSessionUseCase);
     },
     act: (cubit) => cubit.login(email: 'a@b.com', password: '1'),
     expect: () => [isA<LoginLoading>(), isA<LoginFailure>()],
   );
 }
-
-
