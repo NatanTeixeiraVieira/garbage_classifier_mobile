@@ -1,4 +1,3 @@
-// Testes do LoginCubit: sequência de estados emitidos conforme resultado do use case
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

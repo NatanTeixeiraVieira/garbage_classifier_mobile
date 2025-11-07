@@ -31,11 +31,8 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
     try {
-      // Usa o call operator do UseCase (padrão comum). Se o seu usecase tiver outro método,
-      // ajuste para _loginUseCase.execute(...) ou o nome correto.
       final user = await _loginUseCase(email.trim(), password);
       if (user != null) {
-        // persist session
         if (user.id != null) await _saveSessionUseCase(user.id!);
         emit(LoginSuccess(user));
       } else {

@@ -12,8 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupDependencies();
 
-  // restore session into AppCubit before starting the UI so initial route
-  // can be decided based on session state
   final getSession = getIt<GetSessionUserIdUseCase>();
   final appCubit = getIt<AppCubit>();
   final storedId = await getSession();

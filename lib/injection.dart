@@ -44,7 +44,6 @@ void setupDependencies() {
     () => LoginUserUseCase(getIt<IAuthRepository>()),
   );
 
-  // session repository + usecases
   getIt.registerLazySingleton<ISessionRepository>(
     () => SessionRepositoryImpl(getIt<ILocalDatabaseDataSource>()),
   );
@@ -56,7 +55,6 @@ void setupDependencies() {
   getIt.registerLazySingleton(
       () => ClearSessionUseCase(getIt<ISessionRepository>()));
 
-  // cubits: register and login now receive SaveSessionUseCase to persist session
   getIt.registerFactory(
     () => RegisterCubit(
         getIt<RegisterUserUseCase>(), getIt<SaveSessionUseCase>()),
@@ -82,6 +80,5 @@ void setupDependencies() {
     () => CameraCubit(getIt<ClassifyGarbageUseCase>()),
   );
 
-  // AppCubit holds lightweight app session state and can clear the session
   getIt.registerLazySingleton(() => AppCubit(getIt<ClearSessionUseCase>()));
 }
