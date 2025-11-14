@@ -66,7 +66,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<IGarbageClassificationRepository>(
     () => GarbageClassificationRepository(
-      baseUrl: 'https://aa7a9974d1cf.ngrok-free.app',
+      baseUrl: 'https://e43b8db54862.ngrok-free.app',
     ),
   );
 

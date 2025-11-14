@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/camera_cubit.dart';
@@ -39,29 +38,19 @@ class CameraScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Câmera'),
-            backgroundColor: Colors.green[50],
-          ),
-          body: SizedBox.expand(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.green[50]!, Colors.green[200]!],
-                ),
+            title: const Text(
+              "Câmera",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 20,
               ),
-              child: _buildBody(context, state),
             ),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.grey[800],
+            elevation: 0,
+            centerTitle: true,
           ),
-          floatingActionButton: state is CameraReady
-              ? FloatingActionButton(
-                  onPressed: () =>
-                      context.read<CameraCubit>().takePictureAndClassify(),
-                  backgroundColor: Colors.green,
-                  child: const Icon(Icons.camera),
-                )
-              : null,
+          body: _buildBody(context, state),
         );
       },
     );
@@ -78,11 +67,29 @@ class CameraScreen extends StatelessWidget {
     }
 
     if (state is CameraReady) {
-      return CameraPreviewWidget(controller: state.controller);
+      return Stack(
+        children: [
+          CameraPreviewWidget(controller: state.controller),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: FloatingActionButton(
+                onPressed: () =>
+                    context.read<CameraCubit>().takePictureAndClassify(),
+                backgroundColor: Colors.green,
+                child: const Icon(Icons.camera_alt),
+              ),
+            ),
+          ),
+        ],
+      );
     }
 
     if (state is ClassifyingGarbage) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(color: Colors.green),
+      );
     }
 
     if (state is CameraError) {

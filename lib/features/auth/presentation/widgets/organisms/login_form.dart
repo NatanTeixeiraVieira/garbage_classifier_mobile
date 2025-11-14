@@ -73,7 +73,8 @@ class _LoginFormState extends State<LoginForm>
       },
       child: Form(
         key: _formKey,
-        child: ListView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             LoginFormSection(
               emailController: _emailController,
