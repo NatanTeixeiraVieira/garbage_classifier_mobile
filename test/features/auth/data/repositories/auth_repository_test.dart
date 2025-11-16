@@ -1,4 +1,3 @@
-// Testes de AuthRepository: validações, hashing e integração com data source
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:garbage_classifier_mobile/features/auth/data/datasources/local_database_datasource.dart';
@@ -6,8 +5,8 @@ import 'package:garbage_classifier_mobile/features/auth/data/repositories/auth_r
 import 'package:garbage_classifier_mobile/features/auth/data/services/password_hash_service.dart';
 import 'package:garbage_classifier_mobile/features/auth/domain/entities/user.dart';
 
-// Mocks: simulam dependências para focar na lógica do repositório
 class _MockLocalDb extends Mock implements ILocalDatabaseDataSource {}
+
 class _MockHashService extends Mock implements IPasswordHashService {}
 
 void main() {
@@ -15,14 +14,12 @@ void main() {
   late _MockHashService hash;
   late AuthRepository repo;
 
-  // setUp: recria mocks e repositório antes de cada teste
   setUp(() {
     db = _MockLocalDb();
     hash = _MockHashService();
     repo = AuthRepository(db, hash);
   });
 
-  // group: cadastro de usuário (validações e fluxo feliz)
   group('registerUser', () {
     test('deve validar nome mínimo', () async {
       expect(
@@ -106,9 +103,9 @@ void main() {
     });
   });
 
-  // testa o login
   group('loginUser', () {
-    Map<String, dynamic> userMap({required String email, required String password}) {
+    Map<String, dynamic> userMap(
+        {required String email, required String password}) {
       final now = DateTime.now().millisecondsSinceEpoch;
       return {
         'id': 7,
@@ -147,7 +144,6 @@ void main() {
       expect(result, isNull);
     });
   });
-// Verifica se email já existe no banco
   group('emailExists', () {
     test('true quando getUserByEmail retorna algo', () async {
       when(() => db.getUserByEmail('e@x.com')).thenAnswer((_) async => {
@@ -171,5 +167,3 @@ void main() {
     });
   });
 }
-
-

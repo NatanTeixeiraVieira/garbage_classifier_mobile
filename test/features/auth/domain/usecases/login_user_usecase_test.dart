@@ -11,12 +11,12 @@ void main() {
   late LoginUserUseCase usecase;
 
   setUp(() {
-    // setUp: roda antes de cada teste e recria dependências
     repo = _MockAuthRepository();
     usecase = LoginUserUseCase(repo);
   });
 
-  test('deve delegar ao repositório e retornar User quando credenciais válidas', () async {
+  test('deve delegar ao repositório e retornar User quando credenciais válidas',
+      () async {
     final user = User(
       id: 1,
       name: 'John',
@@ -37,12 +37,9 @@ void main() {
   });
 
   test('deve retornar null quando repositório retornar null', () async {
-    when(() => repo.loginUser('x@y.com', 'bad'))
-        .thenAnswer((_) async => null);
+    when(() => repo.loginUser('x@y.com', 'bad')).thenAnswer((_) async => null);
 
     final result = await usecase('x@y.com', 'bad');
     expect(result, isNull);
   });
 }
-
-

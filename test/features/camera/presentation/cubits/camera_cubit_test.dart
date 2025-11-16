@@ -1,4 +1,3 @@
-// Testes do CameraCubit: valida estados quando não inicializado e props do estado final
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,23 +11,19 @@ void main() {
   late _MockClassifyUseCase usecase;
 
   setUp(() {
-    // setUp: recria o mock do use case a cada teste
     usecase = _MockClassifyUseCase();
   });
 
   blocTest<CameraCubit, CameraState>(
     'takePictureAndClassify sem inicializar deve emitir CameraError',
     build: () => CameraCubit(usecase),
-    act: (cubit) => cubit.takePictureAndClassify(), // act: tenta classificar sem inicializar câmera
-    expect: () => [isA<CameraError>()], // assert: erro de câmera não inicializada
+    act: (cubit) => cubit.takePictureAndClassify(),
+    expect: () => [isA<CameraError>()],
   );
 
   test('GarbageClassified state props deve conter result', () {
-    // Este teste valida que o estado inclui o resultado na comparação de igualdade
     final result = GarbageClassification(className: 'Paper', confidence: 0.9);
     final state = GarbageClassified(result);
     expect(state.props, contains(result));
   });
 }
-
-

@@ -15,7 +15,6 @@ void main() {
   late _MockSaveSessionUseCase saveSessionUseCase;
 
   setUp(() {
-    // setUp: cria os mocks dos use cases antes de cada teste
     loginUseCase = _MockLoginUseCase();
     saveSessionUseCase = _MockSaveSessionUseCase();
   });
@@ -23,7 +22,6 @@ void main() {
   blocTest<LoginCubit, LoginState>(
     'emite [Loading, Success] quando login retorna usuário',
     build: () {
-      // Arrange: configurar mock para retornar um usuário
       final user = User(
         id: 1,
         name: 'John',
@@ -40,10 +38,8 @@ void main() {
           .thenAnswer((_) async => true);
       return LoginCubit(loginUseCase, saveSessionUseCase);
     },
-    act: (cubit) => cubit.login(
-        email: ' john@doe.com ', password: '12345678'), // act: dispara a ação
-    expect: () =>
-        [isA<LoginLoading>(), isA<LoginSuccess>()], // assert: ordem dos estados
+    act: (cubit) => cubit.login(email: ' john@doe.com ', password: '12345678'),
+    expect: () => [isA<LoginLoading>(), isA<LoginSuccess>()],
   );
 
   blocTest<LoginCubit, LoginState>(

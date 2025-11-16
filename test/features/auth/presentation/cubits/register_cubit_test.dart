@@ -1,4 +1,3 @@
-// Testes do RegisterCubit: estados emitidos no sucesso e falha do cadastro
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -16,7 +15,6 @@ void main() {
   late _MockSaveSessionUseCase saveSessionUseCase;
 
   setUp(() {
-    // setUp: recria os mocks dos use cases a cada teste
     registerUseCase = _MockRegisterUseCase();
     saveSessionUseCase = _MockSaveSessionUseCase();
   });
@@ -24,7 +22,6 @@ void main() {
   blocTest<RegisterCubit, RegisterState>(
     'emite [Loading, Success] quando cadastro conclui',
     build: () {
-      // Arrange: configurar mock para retornar usuário ao registrar
       final user = User(
         id: 2,
         name: 'Ana',
@@ -58,10 +55,7 @@ void main() {
       neighborhood: 'Bairro',
       city: 'Cidade',
     ),
-    expect: () => [
-      isA<RegisterLoading>(),
-      isA<RegisterSuccess>()
-    ], // assert: ordem dos estados
+    expect: () => [isA<RegisterLoading>(), isA<RegisterSuccess>()],
   );
 
   blocTest<RegisterCubit, RegisterState>(

@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:garbage_classifier_mobile/features/auth/presentation/widgets/atoms/gradient_background.dart';
 
 void main() {
-  testWidgets('GradientBackground envolve o child e aplica gradiente', (tester) async {
+  testWidgets('GradientBackground envolve o child e aplica gradiente',
+      (tester) async {
     await tester.pumpWidget(const MaterialApp(
       home: GradientBackground(
         colors: [Colors.red, Colors.blue],
@@ -12,12 +13,9 @@ void main() {
     ));
 
     expect(find.text('conteudo'), findsOneWidget);
-    // Verifica que Container com BoxDecoration existe
     final container = tester.widget<Container>(find.byType(Container));
     final decoration = container.decoration as BoxDecoration?;
     expect(decoration, isNotNull);
     expect(decoration!.gradient, isA<LinearGradient>());
   });
 }
-
-

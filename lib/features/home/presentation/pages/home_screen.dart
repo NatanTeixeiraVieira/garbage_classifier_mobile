@@ -15,7 +15,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   String _getLixeiraInfo(String garbageType) {
-    // Mapeamento dos tipos de lixo para as lixeiras correspondentes
     final Map<String, Map<String, dynamic>> lixeiras = {
       'plastic': {
         'nome': 'Lixeira Amarela',
