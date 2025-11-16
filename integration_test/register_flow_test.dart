@@ -9,29 +9,24 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Cadastro bem-sucedido navega para Home', (tester) async {
-    // Arranque do app com DI configurado
     setupDependencies();
     await tester.pumpWidget(const MyApp());
     await tester.pumpAndSettle();
 
-    // Preenche formulário de cadastro
     final unique = DateTime.now().microsecondsSinceEpoch;
     await tester.enterText(find.bySemanticsLabel('Nome'), 'Usuário Teste');
-    await tester.enterText(find.bySemanticsLabel('Email'), 'user_$unique@test.com');
+    await tester.enterText(
+        find.bySemanticsLabel('Email'), 'user_$unique@test.com');
     await tester.enterText(find.bySemanticsLabel('Senha'), '12345678');
     await tester.enterText(find.bySemanticsLabel('CEP'), '12345678');
     await tester.enterText(find.bySemanticsLabel('Rua'), 'Rua X');
     await tester.enterText(find.bySemanticsLabel('Bairro'), 'Centro');
     await tester.enterText(find.bySemanticsLabel('Cidade'), 'Rio');
 
-    // Submete cadastro
     await tester.tap(find.text('Cadastrar'));
     await tester.pumpAndSettle();
 
-    // Verifica que chegou na Home
     expect(find.text('Início'), findsOneWidget);
     expect(find.text('Classificador de Lixo'), findsOneWidget);
   });
 }
-
-
